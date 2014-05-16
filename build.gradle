@@ -1,0 +1,6 @@
+
+// Generate Gradle wrapper scripts and libraries
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.12'
+}
+

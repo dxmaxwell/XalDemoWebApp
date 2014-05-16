@@ -1,0 +1,4 @@
+include ':xal.app.web.Demo'
+include ':xal.ext.js.Curl'
+include ':xal.ext.js.Stomp'
+

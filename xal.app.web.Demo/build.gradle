@@ -1,0 +1,25 @@
+
+apply plugin: 'war'
+apply plugin: 'java'
+apply plugin: 'application'
+
+apply plugin: 'eclipse-wtp'
+
+version = '1.0.0'
+
+mainClassName = 'xal.app.web.demo.Application'
+
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile "org.springframework.boot:spring-boot-starter-websocket:1.0.2.RELEASE"
+	
+	compile "org.springframework:spring-messaging:4.0+"
+	
+	runtime project(':xal.ext.js.Curl')
+	runtime project(':xal.ext.js.Stomp')
+}

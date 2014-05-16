@@ -1,0 +1,64 @@
+<html>
+<head>
+ 	<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+	<script src="js/curl/curl.js"></script>
+	<script>
+		// Configuration AMD Loader
+		curl({
+			baseUrl:'/js',
+			paths: {
+				'stomp/stomp': {
+	            	location: 'stomp/stomp.js',
+	            	config: { loader: 'curl/loader/legacy', exports: 'Stomp' }
+	        	}
+			}
+		});
+		
+		// Get the clock for each of the 'clock' elements in the document.
+		curl(['async!demo/demo', 'domReady!'], function(demo) {
+			var idx, clocks = document.querySelectorAll(".clock");
+			for( idx=0; idx<clocks.length; idx++ ) {
+				(function (tz, tm) {
+					demo.clock(
+						tz.textContent,
+						function (msg) {
+							var body = JSON.parse(msg.body);
+							if( body.time ) {
+								tm.innerHTML = '<span style="color:green;">' + body.time + '</span>';
+							} else if( body.error ) {
+								tm.innerHTML = '<span style="color:red;">' + body.error + '</span>';
+							}
+						}
+					);
+				})(clocks[idx].querySelector(".tz"), clocks[idx].querySelector(".tm"));
+			}
+		});
+	</script>
+</head>
+<body>
+	<div>World Clocks</div>
+	<div>
+		<div class="clock">
+			<span class="tz">UTC</span>: <span class="tm"></span>
+		</div>
+	</div>
+	
+	<div>
+		<div class="clock">
+			<span class="tz">EST</span>: <span class="tm"></span>
+		</div>
+	</div>
+	
+	<div>
+		<div class="clock">
+			<span class="tz">MST</span>: <span class="tm"></span>
+		</div>
+	</div>
+	
+	<div>
+		<div class="clock">
+			<span class="tz">XYZ</span>: <span class="tm"></span>
+		</div>
+	</div>
+</body>
+</html>
