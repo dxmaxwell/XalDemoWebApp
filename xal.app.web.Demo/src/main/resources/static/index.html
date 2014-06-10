@@ -1,64 +1,78 @@
+<!DOCTYPE html>
 <html>
 <head>
- 	<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
-	<script src="js/curl/curl.js"></script>
+	<link rel="stylesheet" href="/webjars/bootstrap/3.1.1/css/bootstrap.min.css">
+
+ 	<script src="/webjars/polymer/0.3.1/platform/platform.js"></script>
+ 	<script src="webjars/cujojs-curl/0.8.1/curl-kitchen-sink/curl.js"></script>
 	<script>
 		// Configuration AMD Loader
 		curl({
-			baseUrl:'/js',
+			baseUrl:'/webjars',
 			paths: {
 				'stomp/stomp': {
-	            	location: 'stomp/stomp.js',
+	            	location: 'stomp-websocket/2.3.1/stomp.min.js',
 	            	config: { loader: 'curl/loader/legacy', exports: 'Stomp' }
+	        	},
+	        	'dygraph/dygraph': {
+	            	location: 'dygraphs/1.0.1/dygraph-combined.js',
+	            	config: { loader: 'curl/loader/legacy', exports: 'Dygraph' }
 	        	}
 			}
 		});
 		
-		// Get the clock for each of the 'clock' elements in the document.
+		// Subscribe to clock for each of the 'clock' elements in the document.
 		curl(['async!demo/demo', 'domReady!'], function(demo) {
 			var idx, clocks = document.querySelectorAll(".clock");
 			for( idx=0; idx<clocks.length; idx++ ) {
-				(function (tz, tm) {
+				(function (ck) {
 					demo.clock(
-						tz.textContent,
 						function (msg) {
 							var body = JSON.parse(msg.body);
 							if( body.time ) {
-								tm.innerHTML = '<span style="color:green;">' + body.time + '</span>';
-							} else if( body.error ) {
-								tm.innerHTML = '<span style="color:red;">' + body.error + '</span>';
+								ck.innerHTML = '<span style="color:green;">' + body.time + '</span>';
+							} else {
+								ck.innerHTML = '<span style="color:red;">ERROR</span>';
 							}
 						}
 					);
-				})(clocks[idx].querySelector(".tz"), clocks[idx].querySelector(".tm"));
+				})(clocks[idx]);
 			}
 		});
 	</script>
+	
+	<link rel="import" href="/webjars/cxmanager-cmp/stripchart.html">
+    
 </head>
 <body>
-	<div>World Clocks</div>
-	<div>
-		<div class="clock">
-			<span class="tz">UTC</span>: <span class="tm"></span>
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<div class="navbar-brand">Demo</div>	
+			</div>
+			<ul class="nav navbar-nav navbar-right">
+        		<li><a class="clock" href="#">clock</a></li>
+ 			</ul>
 		</div>
-	</div>
+ 	</nav>
 	
-	<div>
-		<div class="clock">
-			<span class="tz">EST</span>: <span class="tm"></span>
-		</div>
-	</div>
-	
-	<div>
-		<div class="clock">
-			<span class="tz">MST</span>: <span class="tm"></span>
-		</div>
-	</div>
-	
-	<div>
-		<div class="clock">
-			<span class="tz">XYZ</span>: <span class="tm"></span>
-		</div>
+	<div class="container">
+		<div class="row" style="padding-bottom:20px;">
+			<div class="col-xs-6">
+				<cxm-stripchart channel="sim://ramp(0,100,1)"></cxm-stripchart>
+			</div>
+  			<div class="col-xs-6">
+  				<cxm-stripchart channel="sim://sine(-10,10,25,4)"></cxm-stripchart>
+  			</div>
+  		</div>
+  		<div class="row" style="padding-bottom:20px;">
+			<div class="col-xs-6">
+				<cxm-stripchart channel="sim://noise(-1,1,3)"></cxm-stripchart>
+			</div>
+			<div class="col-xs-6">
+				<cxm-stripchart channel="sim://gaussianNoise(6,10,5)"></cxm-stripchart>
+			</div>
+  		</div>
 	</div>
 </body>
 </html>

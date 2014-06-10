@@ -1,0 +1,73 @@
+<link rel="import" href="/webjars/polymer/0.3.1/polymer/polymer.html">
+
+<polymer-element name="cxm-stripchart" attributes="channel">
+  <template>
+  	<div id="graph"></div>
+  	<div id="status"></div>
+  </template>
+  <script>
+  Polymer('cxm-stripchart', {
+	title:'',
+	xlabel:'',
+	ylabel:'',
+	buffer:100,
+	ready:function () {
+			var self=this;
+			curl(['cxmanager/cxmanager', 'dygraph/dygraph'], function (cxm, Dygraph) {
+				var idx, dygraph = null, dydata = [], dyoptions;
+				
+				self.$.status.innerHTML = '<span>Connecting to ' + self.channel + '</span>';
+				cxm.read(self.channel, function (data) {
+					var timestamp;
+					
+					self.$.status.innerHTML = '';
+					
+					if( data.timestamp && data.timestamp.sec ) {
+						timestamp = data.timestamp.sec * 1000;
+						if( data.timestamp.nanoSec ) {
+							timestamp += data.timestamp.nanoSec / 1000000;
+						}
+						timestamp = new Date(timestamp);
+					} else {
+						timestamp = new Date();
+					}
+					
+					dydata.push([timestamp, data.value]);
+					if(dydata.length > self.buffer) {
+						dydata.shift();
+					}
+					console.log(self.xlabel);
+					console.log(self.ylabel);
+					dyoptions = {
+						xAxisLabelWidth:75,
+						yAxisLabelWidth:75
+					};
+					
+					if( self.xlabel !== '' ) {
+						dyoptions.xlabel = self.xlabel;
+					} else {
+						dyoptions.xlabel = 'Time';
+					}
+					
+					if( self.ylabel !== '' ) {
+						dyoptions.ylabel = self.ylabel;
+					}
+					
+					if( self.title !== '' ) {
+						dyoptions.title = self.title;
+					} else {
+						dyoptions.title = self.channel;
+					}
+					
+					if( dygraph == null ) {
+						dygraph = new Dygraph(self.$.graph, dydata, dyoptions);
+					} else {
+						dyoptions.file = dydata;
+						dygraph.updateOptions(dyoptions);
+					}
+				});
+			});
+	  }
+  });
+  </script>
+</polymer-element>

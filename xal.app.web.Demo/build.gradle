@@ -16,10 +16,13 @@ repositories {
 
 
 dependencies {
-	compile "org.springframework.boot:spring-boot-starter-websocket:1.0.2.RELEASE"
-	
+	compile "org.springframework.boot:spring-boot-starter-websocket:1.0+"
 	compile "org.springframework:spring-messaging:4.0+"
+	compile project(':xal.ext.servlet.CXManager')
 	
-	runtime project(':xal.ext.js.Curl')
-	runtime project(':xal.ext.js.Stomp')
+	runtime "org.webjars:cujojs-curl:0.8.1"
+	runtime "org.webjars:stomp-websocket:2.3.1"
+	runtime "org.webjars:bootstrap:3.1.1-1"
+	runtime project(':xal.ext.web.js.CXManager')
+	runtime project(':xal.ext.web.cmp.CXManager')
 }

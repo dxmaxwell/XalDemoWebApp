@@ -1,4 +1,7 @@
 include ':xal.app.web.Demo'
-include ':xal.ext.js.Curl'
-include ':xal.ext.js.Stomp'
+//include ':xal.ext.js.Curl'
+//include ':xal.ext.js.Stomp'
+include ':xal.ext.servlet.CXManager'
+include ':xal.ext.web.js.CXManager'
+include ':xal.ext.web.cmp.CXManager'
 

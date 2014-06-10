@@ -1,0 +1,14 @@
+
+apply plugin: 'java'
+apply plugin: 'eclipse-wtp'
+
+version = '1.0.0'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {	
+
+	runtime "org.webjars:dygraphs:1.0.1-1"
+}
