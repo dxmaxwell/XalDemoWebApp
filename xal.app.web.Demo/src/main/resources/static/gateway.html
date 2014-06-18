@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>WebSocket Echo</title>
+
+	<script>
+		var messages = [ "Testing", "One", "Two", "Three" ];
+
+		//var ws = new WebSocket('ws://'+window.location.host+'/gateway1')
+		var ws = new WebSocket('ws://'+window.location.host+'/gateway2')
+
+		function appendText(text, color) {
+			var div = document.createElement('div');
+			div.style = "padding-top:10px;color:"+color+";";
+			div.appendChild(document.createTextNode(text));
+			document.body.appendChild(div);
+		};
+
+		function sendMessage() {
+			var msg;
+			if( messages.length > 0 ) {
+				msg = messages.shift()
+				appendText('Sending: ' + msg, 'green');
+				ws.send(msg);
+			} else {
+				appendText('Done', 'black');
+			}
+		};
+
+		ws.onopen = function () {
+			console.log("Gateway OPEN");
+			setTimeout(sendMessage, 2000);
+		};
+
+		ws.onmessage = function (msg) {
+			console.log("Gateway MESSAGE");
+			if( msg.data ) {
+				appendText('Recieved: ' + msg.data, 'red');
+			}
+			setTimeout(sendMessage, 2000);
+		}
+
+		ws.onerror = function (error) {
+			console.log("Gateway ERROR");
+			alert(error);
+		};
+
+	</script>
+</head>
+<body>
+	WebSocket Echo Test
+</body>
+</html>

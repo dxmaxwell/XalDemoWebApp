@@ -13,6 +13,7 @@
 
   <modules>
     <module>xal.app.web.Demo</module>
+    <module>pvmanager-websockets</module>
     <module>xal.ext.servlet.CXManager</module>
     <module>xal.ext.web.cmp.CXManager</module>
     <module>xal.ext.web.js.CXManager</module>
