@@ -1,23 +1,25 @@
 OpenXAL Web Application Demostration
 ===================================
 
+NOTE: Compiling now requires Apache Maven to be installed.
+
 To compile the application (UNIX):
 
-`./gradlew :xal.app.web.Demo:installApp`
+`mvn clean verify`
 
 To compile the application (WINDOWS):
 
-`.\gradlew.bat :xal.app.web.Demo:installApp`
+`mvn clean verify`
 
 To execute the application (UNIX):
 
-`./xal.app.web.Demo/build/install/demo/bin/demo`
+`java -jar xal.app.web.Demo/target/org.xal.app.web.Demo-1.0-SNAPSHOT.jar`
 
 To execute the application (WINDOWS):
 
-`.\xal.app.web.Demo\build\install\demo\bin\demo.bat`
+`java -jar xal.app.web.Demo\target\org.xal.app.web.Demo-1.0-SNAPSHOT.jar`
 
 
-then point your browser to [http://localhost:8080](http://localhost:8080)
+then point your browser to [http://localhost:8080/demo.html](http://localhost:8080/demo.html)
 
-
+For testing the PVManager gateway, point your browser to [http://localhost:8080/gateway.html](http://localhost:8080/gateway.html)
